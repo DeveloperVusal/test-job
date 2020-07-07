@@ -3,128 +3,54 @@ namespace HandlerName;
 
 use MySQLName\MySQL;
 
+/**
+ * Модульный класс для работы с БД
+ *
+ * @author Мамедов Вусал
+ */
 class HandlerDB
 {
-	//Соединяемся с базой
+	/**
+	 * @constructor
+	 * @method Вызывает метод {Init}
+	 * @see MySQL::iConnect()
+	 * @return Ничего не возвращает
+	 */
 	function __construct()
 	{
 		MySQL::iConnect();
 		$this->Init();
 	}
 
-	//Подгружаем и готовим работу
+	/**
+	 * Метод инициализации
+	 * 
+	 * @method Вызывает метод {createDefaultTables}
+	 * @access public
+	 * @return Ничего не возвращает
+	 */
 	public function Init()
 	{
-		//$this->createDefaultTables();
-		//$this->InsertDefaultValues();
+		$this->createDefaultTables();
 	}
 
-	//Создаем стандартные таблицы
+	/**
+	 * Создания таблиц
+	 * 
+	 * @access private
+	 * @see MySQL::$mysqli->query
+	 * @return Ничего не возвращает
+	 */
 	private function createDefaultTables()
 	{
-		//Создание таблицы пользователей
-		$q = MySQL::$mysqli->query("CREATE TABLE IF NOT EXISTS `users` 
-									(`id` INT(250) PRIMARY KEY AUTO_INCREMENT,
-									 `login` VARCHAR(255),
-									 `password` TEXT,
-									 `email` VARCHAR(255),
-									 `service_id` INT(250),
-									 `service_name` VARCHAR(255),
-									 `group` INT DEFAULT 0 NOT NULL,
-									 `active` INT(1) DEFAULT 0 NOT NULL,
-									 `name` VARCHAR(255),
-									 `surname` VARCHAR(255),
-									 `patronymic` VARCHAR(255),
-									 `country` VARCHAR(255),
-									 `city` VARCHAR(255),
-									 `sessions` MEDIUMTEXT,
-									 `last_visit` DATETIME,
-									 `dateCreate` DATETIME,
-									 `dateEdit` DATETIME,
-									 `basket` INT DEFAULT 0 NOT NULL,
-									 `basketAuthor` INT(250),
-									 `basketDate` DATETIME
-									);");
-
-		if (!$q) print_r('Таблица "users" не создана.<br>');
-
-		/* ************ */
-		$q = MySQL::$mysqli->query("CREATE TABLE IF NOT EXISTS `logsAuth` 
-									(`id` INT(250) PRIMARY KEY AUTO_INCREMENT,
+		$q = MySQL::$mysqli->query("CREATE TABLE IF NOT EXISTS `todos` 
+									(`id` INT PRIMARY KEY AUTO_INCREMENT,
 									 `title` VARCHAR(255),
-									 `dateCreate` DATETIME,
-									 `dateEdit` DATETIME,
-									 `authorID` INT(250),
-									 FOREIGN KEY (`authorID`) REFERENCES `users` (`id`)
+									 `text` TEXT,
+									 `date` DATETIME
 									);");
 
-		if (!$q) print_r('Таблица "countries" не создана.<br>');
-
-		/* ************ */
-		$q = MySQL::$mysqli->query("CREATE TABLE IF NOT EXISTS `countries` 
-									(`id` INT(250) PRIMARY KEY AUTO_INCREMENT,
-									 `title` VARCHAR(255),
-									 `dateCreate` DATETIME,
-									 `dateEdit` DATETIME,
-									 `authorID` INT(250),
-									 `basket` INT DEFAULT 0 NOT NULL,
-									 `basketAuthorID` INT(250),
-									 `basketDate` DATETIME,
-									 FOREIGN KEY (`authorID`) REFERENCES `users` (`id`),
-									 FOREIGN KEY (`basketAuthorID`) REFERENCES `users` (`id`)
-									);");
-
-		if (!$q) print_r('Таблица "countries" не создана.<br>');
-
-		/* ************ */
-		$q = MySQL::$mysqli->query("CREATE TABLE IF NOT EXISTS `cities` 
-									(`id` INT(250) PRIMARY KEY AUTO_INCREMENT,
-									 `title` VARCHAR(255),
-									 `countryID` INT(250),
-									 `dateCreate` DATETIME,
-									 `dateEdit` DATETIME,
-									 `authorID` INT(250),
-									 `basket` INT DEFAULT 0 NOT NULL,
-									 `basketAuthorID` INT(250),
-									 `basketDate` DATETIME,
-									 FOREIGN KEY (`countryID`) REFERENCES `countries` (`id`),
-									 FOREIGN KEY (`authorID`) REFERENCES `users` (`id`),
-									 FOREIGN KEY (`basketAuthorID`) REFERENCES `users` (`id`)
-									);");
-	}
-
-	//Создаем стандартные таблицы
-	private function InsertDefaultValues()
-	{
-		/*$sql = "INSERT INTO `genres` 
-					(`id`, `title`, `dateCreate`)
-				VALUES
-					(1, 'Ужасы, мистика, триллеры', NOW()),
-					(2, 'Фентези', NOW()),
-					(3, 'Фантастика', NOW()),
-					(4, 'Приключения', NOW()),
-					(5, 'Любовные романы', NOW()),
-					(6, 'Поэзия и драматургия', NOW()),
-					(7, 'Журналы и газеты', NOW()),
-					(8, 'Религия', NOW()),
-					(9, 'Эзотерика', NOW()),
-					(10, 'Спорт и Фитнес', NOW()),
-					(11, 'Справочники и энциклопедии', NOW()),
-					(12, 'Старинные книги (мифы, легенды, эпос)', NOW()),
-					(13, 'Фольклор и народное творчество', NOW()),
-					(14, 'Экономика и бизнес', NOW()),
-					(15, 'Юмор', NOW()),
-					(16, 'Компьютерная литература', NOW()),
-					(17, 'Искусство (музыка, театр, фотография, изобразительное искусство)', NOW()),
-					(18, 'Документальная литература', NOW()),
-					(19, 'Наука и образование', NOW()),
-					(20, 'Саморазвитие', NOW()),
-					(21, 'Художественная литература', NOW()),
-					(22, 'Жанр неизвестен', NOW())";
-		$i = MySQL::$mysqli->query($sql);
-		if (!MySQL::$mysqli->error) {
-			print_r('<b>Строка:</b> '.__LINE__.'<br/><b>Запрос:</b> '.$sql.'<br/><b>Ошибка:</b> '.MySQL::$mysqli->error);
-		}*/
+		if (!$q) die('Таблица "todos" не создана.<br>');
 	}
 
 	//Метод добавления записи в БД
@@ -161,14 +87,26 @@ class HandlerDB
 		}
 	}
 
-	public function iGetTableData($table_name, $key, $key_field, $field, $ech = false)
+	/**
+	 * Получение одной строки из таблицы
+	 * 
+	 * @param string $table_name - Название таблицы
+	 * @param string|int $value - Значение сверямого поля (столбца)
+	 * @param string $key_field - Сверяемое поле (столбец)
+	 * @param string $field - Возвращаемое поле (столбец)
+	 * @param boolean $ech - echo or return. По умолчанию: false
+	 * @access public
+	 * @method Вызывается метод {iSelectTable}
+	 * @return Ничего не возвращает
+	 */
+	public function iGetTableData($table_name, $value, $key_field, $field, $ech = false)
 	{
 		$sel = $this->iSelectTable([
 			'table-name' => $table_name,
 			'where' => [
 				[
 					'field' => $key_field,
-					'value' => $key
+					'value' => $value
 				]
 			],
 			'select-fields' => [$field]
@@ -186,7 +124,18 @@ class HandlerDB
 		}
 	}
 
-	//Метод получения записей из БД
+	/**
+	 * Получение одной строки из таблицы
+	 * 
+	 * @param string $table_name - Название таблицы
+	 * @param string|int $value - Значение сверямого поля (столбца)
+	 * @param string $key_field - Сверяемое поле (столбец)
+	 * @param string $field - Возвращаемое поле (столбец)
+	 * @param boolean $ech - echo or return. По умолчанию: false
+	 * @access public
+	 * @method Вызывается метод {iSelectTable}
+	 * @return Ничего не возвращает
+	 */
 	public function iSelectTable($arr = [])
 	{
 		$sql = "SELECT";

@@ -6,19 +6,27 @@ require(CONFIG_ROOT_PATH.'/src/view.php');
 use ViewName\View;
 use ModelName\Model;
 
+/**
+ * Класс Controller MVC структуры
+ *
+ * @author Мамедов Вусал
+ * @description Этот класс является как шлюзом, где можно написать отдельную логику, 
+ * дабы не трогать View или Model
+ */
 class Controller {
 	/**
-	 * Получает указанную директорию
+	 * Метод получения рендера шаблона веб проекта
 	 *
-	 * @param string $filename - Название .html файла в директории templ
-	 * @param string $options - Массив с данными для .html
+	 * @param string $app - Директория с приложением
+	 * @param string $filename - Название .html файла в директории @app
+	 * @param array $options - Массив с данными для .html
 	 * @access public
 	 * @return Возвращает рендер html
 	 */
-	public function getSystemTemp($filename, $options = null)
+	public function getSystemTemp($app, $filename, $options = null)
 	{
 		$View = new View();
-		return $View->renderTwigFile($filename, $options);
+		return $View->renderTwigFile($app, $filename, $options);
 	}
 
 	/**
@@ -32,22 +40,5 @@ class Controller {
 	{
 		require($pathfile);
 	}
-
-	/**
-	 * Получает указанную директорию
-	 *
-	 * @param string $pathfile - Абсолютный путь к файлу
-	 * @access public
-	 * @return Возвращает массив данных
-	 */
-	/*public function userSystemAuth($obj = [])
-	{	
-		$Model = new Model();
-
-		return $Model->system_userAuth([
-			'value' => $obj['login'],
-			'password' => $obj['password'],
-		]);
-	}*/
 }
 ?>

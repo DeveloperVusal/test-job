@@ -1,7 +1,7 @@
 <?php
 namespace ModelName;
 
-require ('./modules/database/handler-db.php');
+require(CONFIG_ROOT_PATH.'/modules/database/handler-db.php');
 
 use HandlerName\HandlerDB;
 

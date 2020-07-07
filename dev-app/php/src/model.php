@@ -12,59 +12,43 @@ use MySQLName\MySQL;
  */
 class Model
 {	
+	// В данной публичной переменной будут хранится все страницы добавленые
+	// с помощью метода router_add() в классе Router
 	public static $ROUTER_DATA = [];
 
-	
+	/**
+	 * @constructor
+	 * @method Вызывает метод {system_init}
+	 * @access public
+	 * @return Ничего не возвращает
+	 */
 	function __construct()
 	{
-		$this->system_init();
+		# Your code ...
 	}
 
-	public function system_init() {
-		# code ...
-	}
 	
+	/**
+	 * Генерация CSRF токена
+	 *
+	 * @access public
+	 * @return Возвращает хэш из случайной строки и сохраняет в сесиию 'token_csrf' (если она включена)
+	 */
 	public function system_generateCSRF()
 	{
-		$_SESSION['token_csrf'][$_SERVER['REQUEST_URI']] = hash('sha256', $this->system_generateCode('chars', 65));
-		return $_SESSION['token_csrf'][$_SERVER['REQUEST_URI']];
+		$hash = hash('sha256', $this->system_generateCode('chars', 65));
+		$_SESSION['token_csrf'][$_SERVER['REQUEST_URI']] = $hash;
+		return $hash;
 	}
 
-	public function system_getRealIp()
-	{
-		if (isset($_SERVER)) {
-			if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-				$ip = $_SERVER['HTTP_CLIENT_IP'];
-			} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			} else {
-				$ip = $_SERVER['REMOTE_ADDR'];
-			}
-		} else {
-			if (getenv( 'HTTP_X_FORWARDED_FOR' ) ) {
-				$ip = getenv( 'HTTP_X_FORWARDED_FOR' );
-			} elseif ( getenv( 'HTTP_CLIENT_IP' ) ) {
-				$lip = getenv( 'HTTP_CLIENT_IP' );
-			} else {
-				$ip = getenv( 'REMOTE_ADDR' );
-			}
-		}
-		return $ip;
-	}
-
-	public static function system_getDomianUrl()
-	{
-		if (isset($_SERVER['HTTPS'])){
-			$scheme = $_SERVER['HTTPS'];
-		} else {
-			$scheme = '';
-		}
-
-		if (($scheme) && ($scheme != 'off')) $scheme = 'https';
-		else $scheme = 'http';
-		return $scheme.'://'.$_SERVER['SERVER_NAME'];
-	}
-
+	/**
+	 * Генерация случайной строки
+	 *
+	 * @param string $type - Тип гереации chars or int. По умолчанию: chars
+	 * @param int $length - Длина случайной строки. По умолчанию: 6
+	 * @access public
+	 * @return Возвращает случаную строку
+	 */
 	public function system_generateCode($type = 'chars', $length = 6)
 	{
 		if ($type == 'chars') {

@@ -6,14 +6,41 @@ require(CONFIG_ROOT_PATH.'/src/contoller.php');
 use ControllerName\Controller;
 use ModelName\Model;
 
+/**
+ * Класс Router
+ *
+ * @author Мамедов Вусал
+ * @description Класс свзязующий все веб-приложение
+ */
 class Router {
-	public $WEB_PAGES = [];
-
+	/**
+	 * @constructor
+	 * @description По умолчанию пусто, можно унаслвдовать данный класс
+	 * @return Ничего не возвращает
+	 */
 	function __construct()
 	{
 		# code ...
 	}
 
+	/**
+	 * Добавление страниц в роутер
+	 *
+	 * @param string $alias - Псеводоним (ЧПУ) страницы
+	 * @param array $options - Массив с данными для роутинга
+	 * @param array $options['render'] - Массив данных для рендера
+	 * @param string $options['render']['filename'] - Название файла для рендера
+	 * @param array $options['render']['options'] - Массив который будет принимать шаблонизатор 
+	 * 												Twig в шаблоне
+	 * @param string $options['app'] - Директория с приложеним
+	 * @param string $options['file'] - Полный путь до файла, если указывается, то ключ render игнорируется
+	 * @param string $options['title'] - Название сайта в мета-теге title
+	 * @param array $options['description'] - Описание сайта в мета-теге description
+	 * @param array $options['keywords'] - Ключевые слова сайта в мета-теге keywords
+	 * @access public
+	 * @return ничего не возвращает
+	 * @see Model::$ROUTER_DATA
+	 */
 	public function router_add($alias, $options = null)
 	{
 		if (!array_key_exists($alias, Model::$ROUTER_DATA)) {
@@ -23,12 +50,19 @@ class Router {
 				'file' => $options['file'],
 				'title' => $options['title'],
 				'description' => $options['description'],
-				'keywords' => $options['keywords'],
-				'alpha' => $options['alpha']
+				'keywords' => $options['keywords']
 			];
 		}
 	}
 
+	/**
+	 * Получение страницы по ЧПУ ссылке
+	 *
+	 * @param string $url - Псеводоним (ЧПУ) страницы
+	 * @see Model::$ROUTER_DATA
+	 * @access public
+	 * @return Возвращает рендер html или указанный файл
+	 */
 	public function router_get($url)
 	{
 		$parse = parse_url($url);

@@ -2,27 +2,38 @@
 namespace ViewName;
 use ModelName\Model;
 
-require_once CONFIG_ROOT_PATH.'/system/Twig/vendor/autoload.php';
+require_once CONFIG_ROOT_PATH.'/system/vendor/autoload.php';
 
+/**
+ * Класс View MVC структуры
+ *
+ * @author Мамедов Вусал
+ * @description Класс для работы с UI веб-проекта
+ */
 class View {
 	/**
-	 * Получает указанную директорию
+	 * С помощью шаблонизатора Twig рендерим нужные данные
 	 *
-	 * @param string $filename - Название .html файла в директории templ
-	 * @param string $options - Массив с данными для .html
+	 * @param string $app - Директория с приложением
+	 * @param string $filename - Название .html файла в директории @app
+	 * @param array $options - Массив с данными для .html
 	 * @access public
 	 * @return Возвращает рендер html
 	 */
 	public function renderTwigFile($app, $filename, $options = null) {
-		$loader = new \Twig\Loader\FilesystemLoader(CONFIG_ROOT_PATH.'/apps/'.$app);
+		$pathinfo = pathinfo(CONFIG_ROOT_PATH);
+		$dirs = explode('/', $pathinfo['dirname']);
+		$dirname = array_splice($dirs, 0, sizeof($dirs) - 1);
+		$dirname = implode('/', $dirname);
+
+		$loader = new \Twig\Loader\FilesystemLoader($dirname.'/'.$app);
 		$twig = new \Twig\Environment($loader, [
 		    //'cache' => CONFIG_ROOT_PATH.'/system/Twig/compilation_cache',
-		    'cache' => false,
-		    'auto_reload' => true,
+		    //'cache' => false,
+		    //'auto_reload' => true,
 		]);
 
-		$options['dirname'] = '/apps/'.$app;
-		$options['version'] = CONFIG_VERSION;
+		$options['dirname'] = '/'.$app;
 		$Model = new Model();
 		$options['token_csrf'] = $Model->system_generateCSRF();
 

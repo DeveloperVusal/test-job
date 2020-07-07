@@ -8,7 +8,7 @@ header('Content-type: text/html; charsetr=utf-8');
 define ('READFILE', true);
 
 // Подключаем config файл для дальней работы
-require_once('config.php');
+require_once('dev-app/php/config.php');
 
 // Выводим ошибки, если они имеются
 if (CONFIG_WEB_ERRORS == true) {
@@ -18,24 +18,24 @@ if (CONFIG_WEB_ERRORS == true) {
 }
 
 // Подключаем специальные классы (MVC) для работы веба
-require_once('src/router.php');
-require_once('src/mysql.php');
-require_once('src/model.php');
-require_once('extends/model.php');
+require_once('dev-app/php/src/router.php');
+require_once('dev-app/php/src/mysql.php');
+require_once('dev-app/php/src/model.php');
+require_once('dev-app/php/extends/model.php');
 
 use ModelName\Model;
 use MyModelName\MyModel;
 use RouterName\Router;
 
-require_once('handler/router.php');
+require_once('dev-app/php/handler/router.php');
 
 // Получаем специальные модули для расширения web из директории modules
-$dirs = array_slice(scandir(CONFIG_ROOT_PATH.'/dev-app/php/modules'), 2);
+$dirs = array_slice(scandir('dev-app/php/modules'), 2);
 
 if (sizeof($dirs)) {
 	for ($i = 0; $i < count($dirs); $i++) {
-		if (file_exists(CONFIG_ROOT_PATH.'/dev-app/php/modules/'.$dirs[$i].'/init.php')) {
-			include_once CONFIG_ROOT_PATH.'/dev-app/php/modules/'.$dirs[$i].'/init.php';
+		if (file_exists('dev-app/php/modules/'.$dirs[$i].'/init.php')) {
+			include_once 'dev-app/php/modules/'.$dirs[$i].'/init.php';
 		}
 	}
 }
@@ -43,5 +43,3 @@ if (sizeof($dirs)) {
 $Router = new Router();
 $Router->router_get($_SERVER['REQUEST_URI']);
 ?>
-
-<?php require_once('build-app/index.html');?>

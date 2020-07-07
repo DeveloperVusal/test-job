@@ -1,10 +1,16 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { LoadingSpin } from './Loading'
+import { actionAppPostsLoad } from '../redux/actions'
 
 export const TodoList = () => {
+    const dispatch = useDispatch()
     const isLoading = useSelector(state => state.load_posts.isLoading)
+
+    useEffect(() => {
+        dispatch(actionAppPostsLoad())
+    }, [actionAppPostsLoad])
 
     if (isLoading) {
         return (

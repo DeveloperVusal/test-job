@@ -18,27 +18,27 @@ $Router->router_add('/', [
 // Следовательно будет указывать alias и path (полный путь до папки)
 
 // Добавление
-$Router->router_add('/post_add', [
+$Router->router_add('/api/post_add', [
 	'file' => CONFIG_ROOT_PATH.'/apis/post-add.php'
 ]);
 
 // Удаление
-$Router->router_add('/post_delete', [
+$Router->router_add('/api/post_delete', [
 	'file' => CONFIG_ROOT_PATH.'/apis/post-delete.php'
 ]);
 
 // Редактирование
-$Router->router_add('/post_edit', [
+$Router->router_add('/api/post_edit', [
 	'file' => CONFIG_ROOT_PATH.'/apis/post-edit.php'
 ]);
 
 // Вывод публикаций
-$Router->router_add('/get_posts', [
+$Router->router_add('/api/get_posts', [
 	'file' => CONFIG_ROOT_PATH.'/apis/get-posts.php'
 ]);
 
 // Поиск публикаций
-$Router->router_add('/search_posts', [
+$Router->router_add('/api/search_posts', [
 	'file' => CONFIG_ROOT_PATH.'/apis/search-posts.php'
 ]);
 ?>

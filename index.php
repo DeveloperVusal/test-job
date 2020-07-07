@@ -1,3 +1,1 @@
-<?php
-require_once('dev-app/public/root-html.php')
-?>
+<?php require_once('build-app/index.html');?>

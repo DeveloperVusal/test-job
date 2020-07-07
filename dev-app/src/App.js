@@ -2,6 +2,8 @@ import React from 'react'
 
 export const App = () => {
     return (
-        <h1>Hello world! SPA</h1>
+        <>
+            <h1>Hello world! SPA</h1>
+        </>
     )
 }

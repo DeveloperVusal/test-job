@@ -10,11 +10,7 @@ module.exports = {
         path: path.resolve(__dirname, 'build-app'),
         publicPath: '/build-app/'
     },
-    devServer: {
-        allowedHosts: [
-            'http://job-test-app/'
-        ]
-    },
+    performance: {hints: false},
     module: {
         rules: [
             {
@@ -47,6 +43,10 @@ module.exports = {
                 }, {
                   loader: 'sass-loader' // compiles Sass to CSS
                 }]
+            },
+            {
+              test: /\.(png|jpe?g|gif|svg)$/i,
+              use: ['file-loader'],
             },
         ]
     },

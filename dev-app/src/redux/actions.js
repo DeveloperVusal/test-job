@@ -13,12 +13,6 @@ export const actionAppPostCreate = (obj) => {
             }
         })
 
-        console.log('Send obj', JSON.stringify({
-            csrf: document.getElementById('token_csrf').value,
-            title: obj.title,
-            text: obj.text
-        }))
-
         const response = await fetch('/api/post_add', {
             method: 'POST',
             body: JSON.stringify({
@@ -40,18 +34,27 @@ export const actionAppPostCreate = (obj) => {
                 type: POST_APP_ALERT,
                 payload: {
                     alert: true,
-                    type: json.type,
+                    type: json.type === 'error'?'danger':'warning',
                     message: json.message
                 }
             })
         }
 
-        dispatch({
-            type: POST_APP_CREATE,
-            payload: {
-                isLoadingCreate: 2
-            }
-        })
+        if (json.type === 'success') {
+            dispatch({
+                type: POST_APP_CREATE,
+                payload: {
+                    isLoadingCreate: 2
+                }
+            })
+        } else {
+            dispatch({
+                type: POST_APP_CREATE,
+                payload: {
+                    isLoadingCreate: null
+                }
+            })
+        }
     }
 }
 
@@ -59,21 +62,25 @@ export const actionAppPostsLoad = () => {
     return async dispatch => {
         const response = await fetch('/api/get_posts', {
             method: 'POST',
+            body: JSON.stringify({
+                csrf: document.getElementById('token_csrf').value
+            }),
             headers: {
-                'Content-Type': 'text/html' //'application/json'
+                'Content-Type': 'application/json'
             }
         })
         
-        const result = (await response.text()).toString()
+        const json = await response.json()
 
-        console.log('Loading Posts', result)
-
-        dispatch({
-            type: POST_APP_LOAD,
-            payload: {
-                isLoadingPosts: true
-            }
-        })
+        if (json.type === 'success') {
+            dispatch({
+                type: POST_APP_LOAD,
+                payload: {
+                    isLoadingPosts: true,
+                    Posts: json.response
+                }
+            })
+        }
     }
 }
 

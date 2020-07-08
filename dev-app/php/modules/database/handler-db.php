@@ -50,7 +50,7 @@ class HandlerDB
 									 `date` DATETIME
 									);");
 
-		if (!$q) die('Таблица "todos" не создана.<br>');
+		if (!$q) print_r('Таблица "todos" не создана.<br>');
 	}
 
 	//Метод добавления записи в БД

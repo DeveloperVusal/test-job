@@ -34,7 +34,6 @@ export const TodoHead = ({ btnToggleModal, btnIsSearch }) => {
                     if (!event.target.value.length > 0) btnIsSearch(false)
                 }}
             />
-            <Button className="flex-shrink-1" variant="primary">Найти</Button>
             <Button
                 className="flex-shrink-1"
                 variant="dark"

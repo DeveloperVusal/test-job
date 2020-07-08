@@ -1,6 +1,7 @@
 <?php
 namespace ControllerName;
 
+// Импортируем Класы View и Model
 require(CONFIG_ROOT_PATH.'/src/view.php');
 
 use ViewName\View;

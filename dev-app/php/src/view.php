@@ -1,7 +1,10 @@
 <?php
 namespace ViewName;
+
+// Импортируем Клас Model
 use ModelName\Model;
 
+// Импортируем Лодаер Composer'а, откуда импортируем шаблонизатор Twig
 require_once CONFIG_ROOT_PATH.'/system/vendor/autoload.php';
 
 /**
@@ -29,8 +32,8 @@ class View {
 		$loader = new \Twig\Loader\FilesystemLoader($dirname.'/'.$app);
 		$twig = new \Twig\Environment($loader, [
 		    //'cache' => CONFIG_ROOT_PATH.'/system/Twig/compilation_cache',
-		    //'cache' => false,
-		    //'auto_reload' => true,
+		    'cache' => false,
+		    'auto_reload' => true,
 		]);
 
 		$options['dirname'] = '/'.$app;

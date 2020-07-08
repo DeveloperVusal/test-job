@@ -1,8 +1,7 @@
 <?php
+// Импортируем нужные классы для работы
 use ModelName\MyModel;
 use HandlerName\HandlerDB;
-
-//$MyModel = new MyModel();
 
 $handler = new HandlerDB();
 ?>

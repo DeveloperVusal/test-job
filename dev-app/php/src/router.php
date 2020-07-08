@@ -1,6 +1,7 @@
 <?php
 namespace RouterName;
 
+// Импортируем Класы Controller и Model
 require(CONFIG_ROOT_PATH.'/src/contoller.php');
 
 use ControllerName\Controller;

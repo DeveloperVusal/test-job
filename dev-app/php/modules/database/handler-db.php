@@ -1,6 +1,7 @@
 <?php
 namespace HandlerName;
 
+// Импортируем класс для связи с БД
 use MySQLName\MySQL;
 
 /**
@@ -53,7 +54,15 @@ class HandlerDB
 		if (!$q) print_r('Таблица "todos" не создана.<br>');
 	}
 
-	//Метод добавления записи в БД
+	/**
+	 * Метод добавления записей в таблицы
+	 * 
+	 * @param string $table_name - Имя таблицы
+	 * @param array $arr - Ассоциативный массив (key - название поля, value - значение поля)
+	 * @access public
+	 * @method Вызывается метод {sql_injection}
+	 * @return Возвращает sql ответ
+	 */
 	public function iInsertTable($table_name, $arr = [])
 	{
 		$sql = "INSERT INTO `".$table_name."` (";
@@ -88,7 +97,7 @@ class HandlerDB
 	}
 
 	/**
-	 * Получение одной строки из таблицы
+	 * Метод получет одну запись из таблицы
 	 * 
 	 * @param string $table_name - Название таблицы
 	 * @param string|int $value - Значение сверямого поля (столбца)
@@ -125,16 +134,21 @@ class HandlerDB
 	}
 
 	/**
-	 * Получение одной строки из таблицы
+	 * Метод выборки записей из таблицы
 	 * 
-	 * @param string $table_name - Название таблицы
-	 * @param string|int $value - Значение сверямого поля (столбца)
-	 * @param string $key_field - Сверяемое поле (столбец)
-	 * @param string $field - Возвращаемое поле (столбец)
-	 * @param boolean $ech - echo or return. По умолчанию: false
+	 * @param array $arr - Ассоциативный массив
+	 * @param string $arr['table-name'] - Имя таблицы
+	 * @param array $arr['where'] - Индексный массив, принимает в себя ассоциативный массив
+	 * @param array $arr['where'] - Индексный массив, принимает в себя ассоциативный массив
+	 * @example 'where' => [
+	 * 	[ 'field_1' => {field_name}, 'value_2' => {field_value} ],
+	 * 	[ 'field_2' => {field_name}, 'value_2' => {field_value} ]
+	 * ]
+	 * @param array $arr['select-fields'] - Индексный массив с названиями полей
+	 * @param string $arr['others'] - Другие условия выборки такие как ORDER BY, LIMIT и прочее
 	 * @access public
-	 * @method Вызывается метод {iSelectTable}
-	 * @return Ничего не возвращает
+	 * @method Вызывается метод {sql_injection}
+	 * @return Возвращает sql ответ
 	 */
 	public function iSelectTable($arr = [])
 	{
@@ -196,46 +210,13 @@ class HandlerDB
 		}
 	}
 
-	//Метод обновления записи в БД
-	public function iUpdateTable($table_name, $arr = [], $arr2 = [])
-	{
-		$fields = null;
-		$sql = "UPDATE `".self::sql_injection($table_name)."` SET ";
-
-		foreach ($arr as $key => $val) {
-			if (strstr($val, '###:')) {
-				$val = str_replace('###:', '', $val);
-				$fields .= "`".self::sql_injection($key)."` = ".self::sql_injection($val).",";
-			} else {
-				$fields .= "`".self::sql_injection($key)."` = '".self::sql_injection($val)."',";
-			}
-		}
-
-		$fields = substr($fields, 0, -1);
-		$sql .= $fields;
-
-		if (empty($arr2[1])) {
-			$arr2[1] = 'AND';
-		}
-
-		$sql .= " WHERE ";
-
-		foreach ($arr2[0] as $key => $val) {
-			$sql .= "`".self::sql_injection($key)."` = '".self::sql_injection($val)."' ".$arr2[1];
-		}
-
-		$sql = substr($sql, 0, -3);
-		$query = MySQL::$mysqli->query($sql);
-
-		if ($query) {
-			return $query;
-		} else {
-			if (!MySQL::$mysqli->error) {
-				die('<b>Строка:</b> '.__LINE__.'<br/><b>Запрос:</b> '.$sql.'<br/><b>Ошибка:</b> '.MySQL::$mysqli->error);
-			}
-		}
-	}
-
+	/**
+	 * Метод нативного sql запроса
+	 * 
+	 * @param string $sql - Строка sql запроса
+	 * @access public
+	 * @return Возвращает sql ответ
+	 */
 	public function iBaseQuery($sql)
 	{
 		$query = MySQL::$mysqli->query($sql);
@@ -249,7 +230,21 @@ class HandlerDB
 		}
 	}
 
-	//Метод удаления записей из БД
+	/**
+	 * Метод удаления записей из таблицы
+	 * 
+	 * @param array $arr - Ассоциативный массив
+	 * @param string $arr['table-name'] - Имя таблицы
+	 * @param array $arr['where'] - Индексный массив, принимает в себя ассоциативный массив
+	 * @param array $arr['where'] - Индексный массив, принимает в себя ассоциативный массив
+	 * @example 'where' => [
+	 * 	[ 'field_1' => {field_name}, 'value_2' => {field_value} ],
+	 * 	[ 'field_2' => {field_name}, 'value_2' => {field_value} ]
+	 * ]
+	 * @access public
+	 * @method Вызывается метод {sql_injection}
+	 * @return Возвращает sql ответ
+	 */
 	public function iDeleteTable($arr = [])
 	{
 		if($arr['sql'] == true) {
@@ -285,6 +280,14 @@ class HandlerDB
 		}
 	}
 
+	/**
+	 * Метод фильтрации sql инъекций
+	 * 
+	 * @param string $sql - Строка sql запроса
+	 * @access public
+	 * @method Вызывается метод {MySQL::$mysqli->query}
+	 * @return Возвращает строку
+	 */
 	public static function sql_injection($str)
 	{
 		if (get_magic_quotes_gpc() == 1) {

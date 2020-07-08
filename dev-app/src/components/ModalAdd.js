@@ -35,7 +35,7 @@ export const ModalAdd = ({ isModalToogle, btnToggleModal }) => {
                 message: 'Заполните все поля'
             }))
         }
-    })
+    }, [actionAppPostCreate, actionAppAlert])
 
     useEffect(() => {
         console.log('isLoading', isLoading)

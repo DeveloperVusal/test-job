@@ -27,11 +27,6 @@ $Router->router_add('/api/post_delete', [
 	'file' => CONFIG_ROOT_PATH.'/apis/post-delete.php'
 ]);
 
-// Редактирование
-$Router->router_add('/api/post_edit', [
-	'file' => CONFIG_ROOT_PATH.'/apis/post-edit.php'
-]);
-
 // Вывод публикаций
 $Router->router_add('/api/get_posts', [
 	'file' => CONFIG_ROOT_PATH.'/apis/get-posts.php'

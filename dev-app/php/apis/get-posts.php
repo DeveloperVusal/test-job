@@ -16,7 +16,8 @@ if (isset($postData['csrf']) && iconv_strlen($postData['csrf']) > 30) {
         $handlerDB = new HandlerDB();
 
         $sel = $handlerDB->iSelectTable([
-            'table-name' => 'todos'
+            'table-name' => 'todos',
+            'others' => 'ORDER BY `id` DESC'
         ]);
         
         $items = [];

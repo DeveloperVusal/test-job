@@ -33,6 +33,8 @@ export const TodoList = () => {
     const isLoading = useSelector(state => state.todo_posts.isLoadingPosts)
     const posts = useSelector(state => state.todo_posts.Posts)
 
+    // 
+
     const btnDelPost = useCallback((val) => {
         dispatch(actionAppPostDel(val))
     }, [actionAppPostDel])
@@ -41,6 +43,10 @@ export const TodoList = () => {
         dispatch(actionAppPostsLoad())
     }, [])
 
+    useEffect(() => {
+        dispatch(actionAppPostsLoad())
+    }, [actionAppPostsLoad, posts])
+
     if (isLoading) {
         return (
         <>
@@ -48,7 +54,7 @@ export const TodoList = () => {
                 <div className="text-truncate text-secondary font-weight-bolder">
                     {
                         posts.length
-                        ? posts.map(item => (
+                        ? posts.reverse().map(item => (
                             <Item
                                 key={item.id}
                                 id={item.id}

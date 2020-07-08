@@ -12,7 +12,7 @@ export const App = () => {
     }
 
     return (
-        <div className="container-xl mt-5">
+        <div className="container-xl mt-5 mb-5">
             <h2>Todo Application</h2>
             <TodoHead btnToggleModal={btnIsModalAddToggle} />
             <ModalAdd isModalToogle={isModalAdd} btnToggleModal={btnIsModalAddToggle} />

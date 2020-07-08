@@ -19,12 +19,11 @@ const Item = ({ title, text, date}) => {
 export const TodoList = () => {
     const dispatch = useDispatch()
     const isLoading = useSelector(state => state.todo_posts.isLoadingPosts)
+    const posts = useSelector(state => state.todo_posts.Posts)
 
     useEffect(() => {
         dispatch(actionAppPostsLoad())
-    }, [actionAppPostsLoad])
-
-    const posts = useSelector(state => state.todo_posts.Posts)
+    }, [actionAppPostsLoad, posts])
 
     if (isLoading) {
         return (
@@ -32,7 +31,7 @@ export const TodoList = () => {
                 <div className="text-truncate text-secondary font-weight-bolder">
                     {
                         posts.length
-                        ? posts.map(item => (
+                        ? posts.reverse().map(item => (
                             <Item
                                 key={item.id}
                                 title={item.title} 

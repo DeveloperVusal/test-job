@@ -70,7 +70,7 @@ class HandlerDB
 					$val = self::sql_injection(str_replace('###:', '', $val));
 					$sql .= $val.",";
 				} else {
-					$sql .= "'".$val."',";
+					$sql .= "'".self::sql_injection($val)."',";
 				}
 			}
 		}

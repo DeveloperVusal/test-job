@@ -4,7 +4,8 @@ import {
     POST_APP_ALERT,
     POST_APP_LOAD,
     POST_APP_CREATE,
-    POST_APP_DELETE
+    POST_APP_DELETE,
+    SEARCH_APP_LOAD
 } from './types'
 
 export const actionAppPostDel = id => {
@@ -128,6 +129,43 @@ export const actionAppPostsLoad = () => {
                 payload: {
                     isLoadingPosts: true,
                     Posts: allPosts
+                }
+            })
+        }
+    }
+}
+
+export const actionAppPostsSearch = (val) => {
+    return async dispatch => {
+        const response = await fetch('/api/search_posts', {
+            method: 'POST',
+            body: JSON.stringify({
+                csrf: document.getElementById('token_csrf').value,
+                value: val
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        
+        const json = await response.json()
+
+        console.log('json result', json)
+
+        if (json.type === 'success') {
+            const allSearchs = []
+            
+            json.response.map(item => {
+                allSearchs.push({...item})
+            })
+
+            console.log('newSearchs', allSearchs)
+
+            dispatch({
+                type: SEARCH_APP_LOAD,
+                payload: {
+                    isLoadingSearchs: true,
+                    Searchs: allSearchs
                 }
             })
         }

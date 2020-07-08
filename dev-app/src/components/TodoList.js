@@ -22,10 +22,10 @@ const Item = ({ id, title, text, date, btnDel, is_loading}) => {
     )
 }
 
-export const TodoList = () => {
+export const TodoList = ({is_search}) => {
     const dispatch = useDispatch()
-    const isLoading = useSelector(state => state.todo_posts.isLoadingPosts)
-    const posts = useSelector(state => state.todo_posts.Posts)
+    const isLoading = is_search ? useSelector(state => state.todo_posts.isLoadingSearchs) : useSelector(state => state.todo_posts.isLoadingPosts)
+    const posts = is_search ? useSelector(state => state.todo_posts.Searchs) : useSelector(state => state.todo_posts.Posts)
 
     const btnDelPost = useCallback((val) => {
         dispatch(actionAppPostDel(val))

@@ -2,13 +2,16 @@ import {
     POST_APP_ALERT,
     POST_APP_LOAD,
     POST_APP_CREATE,
-    POST_APP_DELETE
+    POST_APP_DELETE,
+    SEARCH_APP_LOAD
 } from './types'
 
 const initStatePost = {
     isLoadingPosts: false,
+    isLoadingSearchs: false,
     isLoadingCreate: 0,
-    Posts: []
+    Posts: [],
+    Searchs: []
 }
 
 export const appPosts = (state = initStatePost, action) => {
@@ -35,6 +38,11 @@ export const appPosts = (state = initStatePost, action) => {
                 }
             }
         case POST_APP_LOAD: 
+            return {
+                ...state,
+                ...action.payload
+            }
+        case SEARCH_APP_LOAD: 
             return {
                 ...state,
                 ...action.payload

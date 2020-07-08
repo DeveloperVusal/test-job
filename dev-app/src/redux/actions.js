@@ -9,14 +9,6 @@ import {
 
 export const actionAppPostDel = id => {
     return async dispatch => {
-        dispatch({
-            type: POST_APP_DELETE,
-            payload: {
-                idDel: id,
-                isLoading: 1
-            }
-        })
-
         const response = await fetch('/api/post_delete', {
             method: 'POST',
             body: JSON.stringify({
@@ -33,10 +25,7 @@ export const actionAppPostDel = id => {
         if (json.type === 'success') {
             dispatch({
                 type: POST_APP_DELETE,
-                payload: {
-                    idDel: id,
-                    isLoading: 2
-                }
+                payload: id
             })
         } else {
             dispatch({
@@ -50,10 +39,7 @@ export const actionAppPostDel = id => {
 
             dispatch({
                 type: POST_APP_DELETE,
-                payload: {
-                    idDel: id,
-                    isLoading: null
-                }
+                payload: 0
             })
         }
     }
@@ -132,10 +118,7 @@ export const actionAppPostsLoad = () => {
             const allPosts = []
             
             json.response.map(item => {
-                allPosts.push({
-                    ...item,
-                    is_loading: null
-                })
+                allPosts.push({...item})
             })
 
             console.log('newPosts', allPosts)

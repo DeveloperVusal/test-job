@@ -17,12 +17,6 @@ const Item = ({ id, title, text, date, btnDel, is_loading}) => {
             </div>
             <div className="flex-shrink-1 justify-content-center align-items-center">
                 <Button variant="danger" onClick={() => btnDel(id)}>Удалить</Button>
-                {is_loading === 1 && 
-                    <>
-                        <div className="celarfix mt-2"></div>
-                        <LoadingSpin />
-                    </>
-                }
             </div>
         </div>
     )
@@ -33,19 +27,14 @@ export const TodoList = () => {
     const isLoading = useSelector(state => state.todo_posts.isLoadingPosts)
     const posts = useSelector(state => state.todo_posts.Posts)
 
-    // 
-
     const btnDelPost = useCallback((val) => {
         dispatch(actionAppPostDel(val))
     }, [actionAppPostDel])
 
-    useEffect(() => {
-        dispatch(actionAppPostsLoad())
-    }, [])
 
     useEffect(() => {
         dispatch(actionAppPostsLoad())
-    }, [actionAppPostsLoad, posts])
+    }, [])
 
     if (isLoading) {
         return (
@@ -54,14 +43,13 @@ export const TodoList = () => {
                 <div className="text-truncate text-secondary font-weight-bolder">
                     {
                         posts.length
-                        ? posts.reverse().map(item => (
+                        ? posts.map(item => (
                             <Item
                                 key={item.id}
                                 id={item.id}
                                 title={item.title} 
                                 text={item.text} 
                                 date={item.date}
-                                is_loading={item.is_loading}
                                 btnDel={btnDelPost}
                             />
                           ))

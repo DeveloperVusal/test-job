@@ -35,6 +35,17 @@ export const actionAppPostCreate = (obj) => {
 
         console.log('json result response', json)
 
+        if (json.type !== 'success') {
+            dispatch({
+                type: POST_APP_ALERT,
+                payload: {
+                    alert: true,
+                    type: json.type,
+                    message: json.message
+                }
+            })
+        }
+
         dispatch({
             type: POST_APP_CREATE,
             payload: {

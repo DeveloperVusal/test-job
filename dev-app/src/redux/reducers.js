@@ -30,7 +30,7 @@ export const appPosts = (state = initStatePost, action) => {
 const initStateAlerts = {
     alert: false,
     type: 'danger',
-    alertMessage: ''
+    message: ''
 }
 
 export const appAlerts = (state = initStateAlerts, action) => {

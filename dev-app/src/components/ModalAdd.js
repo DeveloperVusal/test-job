@@ -1,24 +1,40 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import {
-    Modal, Form, Button
+    Modal, Form, Button, Alert
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { actionAppPostCreate } from '../redux/actions'
+import { actionAppPostCreate, actionAppAlert } from '../redux/actions'
 import { LoadingSpin } from './Loading'
 
 export const ModalAdd = ({ isModalToogle, btnToggleModal }) => {
     const isLoading = useSelector(state => state.todo_posts.isLoadingCreate)
+    const isAlert = useSelector(state => state.alert.alert)
+    const isAlertType = useSelector(state => state.alert.type)
+    const isAlertMessage = useSelector(state => state.alert.message)
+
     const [valTitle, setValTitle] = useState('')
     const [valText, setValText] = useState('')
 
     const dispatch = useDispatch()
 
     const btnCreatePost = useCallback(() => {
-        dispatch(actionAppPostCreate({
-            title: valTitle,
-            text: valText
-        }))
+        if (valTitle !== '' && valText !== '') {
+            dispatch(actionAppAlert({
+                alert: false,
+                message: ''
+            }))
+
+            dispatch(actionAppPostCreate({
+                title: valTitle,
+                text: valText
+            }))
+        } else {
+            dispatch(actionAppAlert({
+                alert: true,
+                message: 'Заполните все поля'
+            }))
+        }
     })
 
     useEffect(() => {
@@ -67,6 +83,9 @@ export const ModalAdd = ({ isModalToogle, btnToggleModal }) => {
                                 }}
                             />
                         </Form.Group>
+                        <Alert show={isAlert} key="1" variant={isAlertType}>
+                            {isAlertMessage}
+                        </Alert>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer className="modal-footer justify-content-center">

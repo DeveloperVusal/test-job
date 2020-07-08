@@ -94,7 +94,7 @@ class HandlerDB
 	 * @param string|int $value - Значение сверямого поля (столбца)
 	 * @param string $key_field - Сверяемое поле (столбец)
 	 * @param string $field - Возвращаемое поле (столбец)
-	 * @param boolean $ech - echo or return. По умолчанию: false
+	 * @param boolean $ech - Выводит на экран или вернуть. По умолчанию: false
 	 * @access public
 	 * @method Вызывается метод {iSelectTable}
 	 * @return Ничего не возвращает

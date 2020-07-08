@@ -12,7 +12,7 @@ import {
 } from './reducers'
 
 const routeReducers = combineReducers({
-    load_posts: appPosts,
+    todo_posts: appPosts,
     alert: appAlerts
 })
 

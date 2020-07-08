@@ -31,13 +31,16 @@ class Model
 	/**
 	 * Генерация CSRF токена
 	 *
+	 * @param string $sesion_name - Ключ сессии
 	 * @access public
 	 * @return Возвращает хэш из случайной строки и сохраняет в сесиию 'token_csrf' (если она включена)
 	 */
-	public function system_generateCSRF()
+	public function system_generateCSRF($sesion_name = 'token_csrf')
 	{
+		session_start();
+		
 		$hash = hash('sha256', $this->system_generateCode('chars', 65));
-		$_SESSION['token_csrf'][$_SERVER['REQUEST_URI']] = $hash;
+		$_SESSION[$sesion_name] = $hash;
 		return $hash;
 	}
 

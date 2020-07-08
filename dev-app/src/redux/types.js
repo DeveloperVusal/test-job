@@ -1,2 +1,3 @@
 export const POST_APP_ALERT = 'POST_APP_ALERT'
 export const POST_APP_LOAD = 'POST_APP_LOAD'
+export const POST_APP_CREATE = 'POST_APP_CREATE'

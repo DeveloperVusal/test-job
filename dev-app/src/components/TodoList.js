@@ -6,7 +6,7 @@ import { actionAppPostsLoad } from '../redux/actions'
 
 export const TodoList = () => {
     const dispatch = useDispatch()
-    const isLoading = useSelector(state => state.load_posts.isLoading)
+    const isLoading = useSelector(state => state.todo_posts.isLoadingPosts)
 
     useEffect(() => {
         dispatch(actionAppPostsLoad())
